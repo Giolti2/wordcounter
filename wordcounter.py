@@ -1,5 +1,6 @@
 import csv
 import re
+import os
 import xlsxwriter # type: ignore
 import tkinter as tk
 from tkinter import filedialog
@@ -7,8 +8,15 @@ from tkinter import filedialog
 root = tk.Tk()
 root.withdraw()
 
-filepath = filedialog.askopenfilename()
-#filepath = input('Type file path relative to script location: ')
+filepath = os.path.abspath(filedialog.askopenfilename())
+folder = os.path.dirname(os.path.abspath(filepath))
+filename = os.path.basename(filepath).split('.')[0]
+
+outputFolder = os.path.join(folder, 'Count')
+try:
+    os.mkdir(outputFolder)
+except FileExistsError as error:
+    print(error)
 
 rowArray = []
 
@@ -27,7 +35,7 @@ with open(filepath, encoding='utf8', newline='') as file:
         for word in row:
             counts[word] = counts.get(word, 0) + 1
     
-    workbook = xlsxwriter.Workbook(filepath + '-count.xlsx')
+    workbook = xlsxwriter.Workbook(os.path.join(outputFolder, filename + '-count.xlsx'))
     worksheet = workbook.add_worksheet()
     
     row = 0
