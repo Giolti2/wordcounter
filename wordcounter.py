@@ -25,10 +25,9 @@ with open(filepath, encoding='utf8', newline='') as file:
     for row in filereader:
         rowArray.append(row)
         
-    rowArray.pop(0)
     for i in range(len(rowArray)):
         for j in range(len(rowArray[i])):
-            rowArray[i][j] = re.sub(r'[^a-zA-Z0-9]', '', rowArray[i][j])
+            rowArray[i][j] = re.sub(r'[^a-zA-Z0-9]', '', rowArray[i][j]).lower()
     
     counts = dict()
     for row in rowArray:
